@@ -45,12 +45,7 @@ curl -sSL https://get.docker.com/ | sh
 ## Install docker compose
 You should install docker compose as it's what I will use to configure portainer and traefik containers. First, download the docker compose binary into the `/usr/local/bin` directory with the following curl command:
 ```sh
-curl -L "https://github.com/docker/compose/releases/download/1.23.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-```
-
-Apply executable permissions to the compose binary:
-```sh
-chmod +x /usr/local/bin/docker-compose
+apt install docker-compose
 ```
 
 ## Deploy
