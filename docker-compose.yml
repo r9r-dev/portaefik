@@ -7,28 +7,27 @@ services:
       - traefik
     ports:
       - "80:80"
-      - "8080:8080"
       - "443:443"
     volumes:
       -  "$PWD/traefik.toml:/etc/traefik/traefik.toml"
-      -  "$PWD/acme:/etc/traefik/acme"
+      -  "$PWD/acme.json:/etc/traefik/acme.json"
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
     labels:
-      - "traefik.frontend.rule=Host:traefik.cab.re"
+      - "traefik.frontend.rule=Host:traefik.altf4.dev"
       - "traefik.port=8080"
       - "traefik.backend=traefik"
-      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.frontend.entryPoints=https"
 
   portainer:
     image: portainer/portainer
     networks:
       - traefik
     labels:
-      - "traefik.frontend.rule=Host:portainer.cab.re"
+      - "traefik.frontend.rule=Host:portainer.altf4.dev"
       - "traefik.port=9000"
       - "traefik.backend=portainer"
-      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.frontend.entryPoints=https"
     volumes:
         - "/var/run/docker.sock:/var/run/docker.sock"
     restart: unless-stopped

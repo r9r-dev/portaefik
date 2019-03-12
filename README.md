@@ -8,12 +8,12 @@ This repository contains everything needed to prepare a scalable linux server re
 Because it's hard to master and not really needed for such small projects and for personal use. It's subject to discuss anyway :)
 
 # Features
- * Reverse proxy exposing only 443 (my domain is in HSTS preload list)
+ * Reverse proxy exposing only 443 and redirect 80 to 443
  * Simple configuration, clean, lightweight, forgetable
  * Able to manage many domain names and/or subdomains
  * Automagically creating validated certificates (with Let's Encrypt)
- * Ready to load-balance frontend if needed (in the future)
- * Using docker (because it's cool !)
+ * Ready to load-balance frontend with backends if needed (in the future)
+ * Docker administration from a friendly web interface
 
 # Services
 ## Traefik
@@ -22,9 +22,9 @@ Traefik is the front wired to the backs. It can automagically discover your dock
 Yup, Traefik is just magic and it uses almost no ressources. Fantastic !
 
 ## Portainer
-You don't want to manage your containers using command-line (no you don't !). Portainer can do everything dirty for you by letting you manage everything docker related on your server using a web UI. The last time you will is for installing this server.
+You don't want to manage your containers using command-line (no you don't !). Portainer can do everything dirty for you by letting you manage everything docker related on your server using a web UI. The last time you will use a command line is for installing this server.
 
-# Ok GO !
+# Let's go !
 ## Run your server
 You need a linux machine with Ubuntu 18.04 LTS. Of course, you must be root or have sudo access to it. I am using a [Scaleway Pro X64-15GB for 24,99€/month](https://www.scaleway.com/pricing/#anchor_pro) because it's a very powerfull VPS (6x2Ghz Epyc CPU, 15GB RAM, 200GB SSD) that can run many services at once.
 
@@ -54,16 +54,23 @@ chmod +x /usr/local/bin/docker-compose
 ```
 
 ## Deploy
-### Preparing environnement
+### Prepare your environnement
 We are going to use a single network called `traefik` where all containers that are handling HTTP traffic (using Traefik) will reside in.
 ```sh
 docker network create traefik
 ```
 
-### Traefik configuration
-Edit traefik.toml and to change lines `domain = "altf4.dev"` and `email = "xxx@xx.com"`.
+Next, we download this repository.
 ```sh
-nano /opt/traefik/traefik.toml
+apt install -y git
+git clone https://github.com/rlcx/portaefocker.git
+cd portaefocker
+```
+
+### Traefik configuration
+Edit `traefik.toml` and change lines `domain = "altf4.dev"` and `email = "xxx@xx.com"`.
+```sh
+nano traefik.toml
 ```
 
 That configuration tells traefik to:
