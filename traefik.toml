@@ -30,7 +30,7 @@ network = "traefik"
 
 [acme]
 email = "xxx@xx.com"
-storage = "/etc/traefik/acme/acme.json"
+storage = "/etc/traefik/acme.json"
 entryPoint = "https"
 onHostRule = true
   [acme.tlsChallenge]
