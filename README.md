@@ -55,11 +55,12 @@ We are going to use a single network called `traefik` where all containers that 
 docker network create traefik
 ```
 
-Next, we download this repository.
+Next, download this repository and change acme.json authorisations to 600 (for traefik to work properly).
 ```sh
 apt install -y git
 git clone https://github.com/rlcx/portaefocker.git
 cd portaefocker
+chmod 600 acme.json
 ```
 
 ### Traefik configuration
