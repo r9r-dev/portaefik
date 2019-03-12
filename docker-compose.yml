@@ -15,10 +15,11 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
+      - "traefik.frontend=traefik"
       - "traefik.frontend.rule=Host:traefik.altf4.dev"
+      - "traefik.frontend.auth.basic.users=User:Hash"
       - "traefik.port=8080"
       - "traefik.backend=traefik"
-      - "traefik.frontend.entryPoints=https"
 
   portainer:
     image: portainer/portainer
@@ -26,10 +27,10 @@ services:
       - traefik
     labels:
       - "traefik.enable=true"
+      - "traefik.frontend=portainer"
       - "traefik.frontend.rule=Host:portainer.altf4.dev"
       - "traefik.port=9000"
       - "traefik.backend=portainer"
-      - "traefik.frontend.entryPoints=https"
     volumes:
         - "/var/run/docker.sock:/var/run/docker.sock"
     restart: unless-stopped

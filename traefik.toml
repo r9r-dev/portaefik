@@ -5,7 +5,7 @@
 
 debug = false
 logLevel = "ERROR"
-defaultEntryPoints = ["http", "https"]
+defaultEntryPoints = ["https"]
 
 [entryPoints]
   [entryPoints.http]
