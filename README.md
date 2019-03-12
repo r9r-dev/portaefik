@@ -58,8 +58,8 @@ docker network create traefik
 Next, download this repository and change acme.json authorisations to 600 (for traefik to work properly).
 ```sh
 apt install -y git
-git clone https://github.com/rlcx/portaefocker.git
-cd portaefocker
+git clone https://github.com/rlcx/portaefik.git
+cd portaefik
 chmod 600 acme.json
 ```
 
@@ -76,7 +76,14 @@ That configuration tells traefik to:
  * Create a certificate on host rules using Let's Encrypt
 
 ### Traefik and Portainer deployment
-Edit `docker-compose.yml` and modify the line `"traefik.frontend.auth.basic.users=User:Hash"` to secure your traefik dashboard. Start the required containers using the following command:
+Edit `docker-compose.yml` and modify the line `"traefik.frontend.auth.basic=User:Hash"` to secure your traefik dashboard. To do it, you will need htpasswd.
+```sh
+apt install -y apache2-utils
+htpasswd -nb username password
+```
+In the resulting output, replace any `$` with `$$` and paste it over the `User:Hash` part. On the previous example, the output could be `username:$apr1$W3ovhvF4$juH88W/ijxNVSHpN2S5K./` so the resulting line must be `"traefik.frontend.auth.basic=username:$$apr1$$W3ovhvF4$$juH88W/ijxNVSHpN2S5K./"`
+
+ Start the required containers using the following command:
 ```sh
 docker-compose up -d
 ```

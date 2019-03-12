@@ -17,7 +17,7 @@ services:
       - "traefik.enable=true"
       - "traefik.frontend=traefik"
       - "traefik.frontend.rule=Host:traefik.altf4.dev"
-      - "traefik.frontend.auth.basic.users=User:Hash"
+      - "traefik.frontend.auth.basic=User:Hash"
       - "traefik.port=8080"
       - "traefik.backend=traefik"
 
