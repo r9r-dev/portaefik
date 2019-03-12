@@ -64,7 +64,7 @@ chmod 600 acme.json
 ```
 
 ### Traefik configuration
-Edit `traefik.toml` and change lines `domain = "altf4.dev"` and `email = "xxx@xx.com"`.
+Edit `traefik.toml` and change lines `domain = "altf4.dev"` and `email = "xxx@xx.com"`. Please use a domain you own and where you can use a wildcard `*.yourdomain.com` **A** entry.
 ```sh
 nano traefik.toml
 ```
@@ -80,3 +80,10 @@ You can review `docker-compose.yml` to suit your needs but you probably have not
 ```sh
 docker-compose up -d
 ```
+
+## Access your server
+On you domain manager, add a wildcard **A** entry pointing to your server's public ip. Like `A *.altf4.dev 1.2.3.4 14400`. Now, when you try to access to `https://portainer.yourdomain.tld`, your browser will probably insult you telling you that your connexion is not private. Wait some second (traefik received your request and is asking for a valid certificate to let's encrypt). Refresh your browser until everything is ok.
+
+Take no time to create an admin password for portainer. Use a very strong password. You can also create a new admin user and delete the one called "admin" for increased security.
+
+You are also able to access to https://traefik.yourdomain.tld.
