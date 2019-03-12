@@ -76,7 +76,7 @@ That configuration tells traefik to:
  * Create a certificate on host rules using Let's Encrypt
 
 ### Traefik and Portainer deployment
-You can review `docker-compose.yml` to suit your needs but you probably have nothing to change. Start the required containers using the following command:
+Edit `docker-compose.yml` and modify the line `"traefik.frontend.auth.basic.users=User:Hash"` to secure your traefik dashboard. Start the required containers using the following command:
 ```sh
 docker-compose up -d
 ```
