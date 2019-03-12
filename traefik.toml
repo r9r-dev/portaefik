@@ -16,6 +16,9 @@ defaultEntryPoints = ["http", "https"]
   address = ":443"
     [entryPoints.https.tls]
 
+[api]
+dashboard = true
+
 [retry]
 
 [docker]
