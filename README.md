@@ -81,6 +81,8 @@ Edit `docker-compose.yml` and modify the line `"traefik.frontend.auth.basic=User
 apt install -y apache2-utils
 htpasswd -nb username password
 ```
+Alternatively, you can generate a password/hash on [htaccesstools.com](http://www.htaccesstools.com/htpasswd-generator/).
+
 In the resulting output, replace any `$` with `$$` and paste it over the `User:Hash` part. On the previous example, the output could be `username:$apr1$W3ovhvF4$juH88W/ijxNVSHpN2S5K./` so the resulting line must be `"traefik.frontend.auth.basic=username:$$apr1$$W3ovhvF4$$juH88W/ijxNVSHpN2S5K./"`
 
  Start the required containers using the following command:
