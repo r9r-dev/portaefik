@@ -8,7 +8,7 @@ This repository contains everything needed to prepare a scalable linux server re
 Because it's hard to master and not really needed for such small projects and for personal use. It's subject to discuss anyway :)
 
 # Features
- * Reverse proxy exposing only 443 and redirect 80 to 443
+ * Reverse proxy exposing only 443 (https)
  * Simple configuration, clean, lightweight, forgetable
  * Able to manage many domain names and/or subdomains
  * Automagically creating validated certificates (with Let's Encrypt)
@@ -70,7 +70,7 @@ nano traefik.toml
 ```
 
 That configuration tells traefik to:
- * Accept HTTP/80 and HTTPS/443 but redirect HTTP to HTTPS
+ * Accept HTTPS/443
  * Watch docker api on /var/run/docker.sock
  * Use network called "web" for containers
  * Create a certificate on host rules using Let's Encrypt
