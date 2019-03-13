@@ -91,17 +91,17 @@ docker-compose up -d
 ```
 
 # Access your server
-On you nameserver hosting service, add a wildcard **A** entry pointing to your server's public ip. Like `A *.altf4.dev 1.2.3.4 14400`. Preferably, you can create a **A** entry for `portainer.yourdomain.tld` and `traefik.yourdomain.tld`. Now, when you try to access to `https://portainer.yourdomain.tld`, your browser will probably insult you telling you that your connexion is not private. Wait some second (traefik received your request and is asking for a valid certificate to let's encrypt). Refresh your browser until everything is ok.
+On your nameserver hosting service, add a wildcard **A** entry pointing to your server's public ip. Like `A *.altf4.dev 1.2.3.4 14400`. Preferably, you can create a **A** entry for `portainer.yourdomain.tld` and `traefik.yourdomain.tld`. Now, when you try to access to `https://portainer.yourdomain.tld`, your browser will probably insult you telling you that your connexion is not private. Wait some second (traefik received your request and is asking for a valid certificate to let's encrypt). Refresh your browser until everything is ok.
 
 Take no time to create an admin password for portainer. Use a very strong password. You can also create a new admin user and delete the one called "admin" for increased security.
 
-You are also able to access to https://traefik.yourdomain.tld. Again, please use a strong password and avoir users like `admin`, `root` or any other common usernames.
+You are also able to access to https://traefik.yourdomain.tld. Again, please use a strong password and avoid users like `admin`, `root` or any other common usernames.
 
 # How to use ?
-So, the only opened port traefik is handling is 443. It's recommended to deny access to any other ports. When you want to create a new webapp, you have to first write a docker-compose file and send it to portainer (in Stacks). Alternatively, you can use the App Templates menu or start new containers manually. The choice is yours :)
+So, the only opened port traefik is handling is 443. It's recommended to deny access to any other ports. When you want to create a new webapp, you have to first write a docker-compose file and send it to portainer (in Stacks menu). Alternatively, you can use the App Templates menu or start new containers manually. The choice is yours :)
 
 The important things to remember are:
- * For traefik to route your server, you must connect it to the traefik network.
+ * For traefik to route your server, you must connect it to the network called `traefik`.
  * Even if on the traefik network, you can disable the route by adding the label `traefik.enable=false` to the container
  * Do not expose the port on your host ! If your docker-compose use the `port` section, remove it and route it to traefik instead.
  * Use the label traefik.frontend.rule to route a subdomain to your container
@@ -120,7 +120,7 @@ services:
     restart: unless-stopped
 ```
 
-This simple compose file expose your server port 80 to the port 80 of the container `emilevauge/whoami`. Your objective, is to block it and just let traefik expose it itself. Bonus, traefik will handle https instead of http and will create a certificate for you flawlessly.
+This simple compose file expose your server port 80 to the port 80 of the container `emilevauge/whoami`. Your objective is to remove it and just let traefik expose it itself. Bonus, traefik will handle https instead of http and will create a certificate for you flawlessly.
 
 So you have to modify it like this :
 ```yaml
@@ -143,7 +143,9 @@ networks:
       name: traefik    
 ```
 
-The container is not exposing is port to host anymore. Instead, you use labels handle it. The frontend rule tell traefik on which url to route that container's port. Easy =)
+The container is not exposing is port to host anymore. Instead, you use labels to handle it. The frontend rule tell traefik on which url to route that container's port. Easy =)
+
+ping.yourdomain.tld => your_server:443 => traefik => container:80
 
 Don't forget to configure your subdomain to your server ip on your nameserver hosting service. When you are ready, click on *Deploy the stack*. This is where the magic starts. Go to https://ping.yourdomain.tld : it should work using https with a valid certificate.
 
