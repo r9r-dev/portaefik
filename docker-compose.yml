@@ -6,7 +6,6 @@ services:
     networks:
       - traefik
     ports:
-      - "80:80"
       - "443:443"
     volumes:
       -  "$PWD/traefik.toml:/etc/traefik/traefik.toml"
@@ -15,7 +14,6 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend=traefik"
       - "traefik.frontend.rule=Host:traefik.altf4.dev"
       - "traefik.frontend.auth.basic=User:Hash"
       - "traefik.port=8080"
@@ -27,7 +25,6 @@ services:
       - traefik
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend=portainer"
       - "traefik.frontend.rule=Host:portainer.altf4.dev"
       - "traefik.port=9000"
       - "traefik.backend=portainer"
