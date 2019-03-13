@@ -26,7 +26,7 @@ You don't want to manage your containers using command-line (no you don't !). Po
 
 # Let's go !
 ## Run your server
-You need a linux machine with Ubuntu 18.04 LTS. Of course, you must be root or have sudo access to it. I am using a [Scaleway Pro X64-15GB for 24,99€/month](https://www.scaleway.com/pricing/#anchor_pro) because it's a very powerfull VPS (6x2Ghz Epyc CPU, 15GB RAM, 200GB SSD) that can run many services at once.
+You need a linux machine preferably with Ubuntu 18.04 LTS (because that's what I'm using). Of course, you must be root or have sudo access to it. I am using a [Scaleway Pro X64-15GB for 24,99€/month](https://www.scaleway.com/pricing/#anchor_pro) because it's a very powerfull VPS (6x2Ghz Epyc CPU, 15GB RAM, 200GB SSD) that can run many services at once. Next commands in this readme suppose you are root. If not, you can use `sudo su`.
 
 ### Optional (but recommended) : Update your system
 Update packages to their lastest versions
@@ -43,7 +43,7 @@ curl -sSL https://get.docker.com/ | sh
 ```
 
 ## Install docker compose
-You should install docker compose as it's what I will use to configure portainer and traefik containers. First, download the docker compose binary into the `/usr/local/bin` directory with the following curl command:
+You should install docker compose as it's what I will use to configure portainer and traefik containers. Just use apt because we don't mind using the last version available.
 ```sh
 apt install docker-compose
 ```
