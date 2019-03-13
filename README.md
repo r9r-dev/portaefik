@@ -150,3 +150,71 @@ ping.yourdomain.tld => your_server:443 => traefik => container:80
 Don't forget to route your subdomain to your server ip on your nameserver hosting service. When you are ready, click on *Deploy the stack*. This is where the magic starts. Go to https://ping.yourdomain.tld : it should work using https with a valid certificate.
 
 With portainer, you can then go back to your stacks and edit the `docker-compose.yml` file. Portainer let you also manage your stack, stopping, killing, restarting any containers with a single click.
+
+# Data and backups
+Now that your server is running and you are starting to deploy services, you should ask yourself a question : "how do I backup this machine ?" You start to be used to be a lazy guy and don't want to do extra stuff. So here is a way to backup everything easily and without being dependant to the host's operating system.
+
+## All your data are belong to us
+First, create a simple stupid folder:
+```sh
+/data
+```
+Data is where is data. Ok cool. Time to move traefik and portainer's data.
+
+For Traefik:
+```sh
+docker-compose stop
+mkdir -p /data/traefik
+cp traefik.toml /data/traefik/traefik.toml
+cp acme.json /data/traefik/acme.json 
+```
+For Portainer:
+```sh
+mkdir -p /data/portainer
+docker cp 7:/data/. /data/portainer/.
+```
+Replace `7` with the first or two letters of id of your portainer's container (it just have to be unique between your containers). You can know it's id using portainer webapp or `docker ps` command.
+
+## Modify docker compose
+Edit docker compose to map volumes to the new paths:
+```yaml
+version: '2'
+
+services:
+  proxy:
+    image: traefik
+    networks:
+      - traefik
+    ports:
+      - "443:443"
+    volumes:
+      - /data/traefik/traefik.toml:/etc/traefik/traefik.toml
+      - /data/traefik/acme.json:/etc/traefik/acme.json
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+    labels:
+      - traefik.frontend.rule=Host:traefik.altf4.dev
+      - traefik.frontend.auth.basic.users=username:$$apr1$$W3ovhvF4$$juH88W/ijxNVSHpN2S5K./
+      - traefik.port=8080
+      - traefik.backend=traefik
+
+  portainer:
+    image: portainer/portainer
+    networks:
+      - traefik
+    labels:
+      - traefik.frontend.rule=Host:portainer.altf4.dev
+      - traefik.port=9000
+      - traefik.backend=portainer
+    volumes:
+        - /data/portainer:/data
+        - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+networks:
+  traefik:
+    external:
+      name: traefik
+```
+
+You can now safely backup /data and nothing else. For every new service you are deploying, create a new folder in /data to map your volumes and you are good to go :)
