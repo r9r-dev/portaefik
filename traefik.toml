@@ -25,7 +25,7 @@ dashboard = true
 endpoint = "unix:///var/run/docker.sock"
 domain = "altf4.dev"
 watch = true
-exposedbydefault = false
+exposedbydefault = true
 network = "traefik"
 
 [acme]

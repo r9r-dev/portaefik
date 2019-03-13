@@ -43,14 +43,14 @@ curl -sSL https://get.docker.com/ | sh
 ```
 
 ## Install docker compose
-You should install docker compose as it's what I will use to configure portainer and traefik containers. Just use apt because we don't mind using the last version available.
+You should install docker compose as it's what I will use to configure portainer and traefik containers. Just use apt because we don't mind using the lastest version available.
 ```sh
 apt install docker-compose
 ```
 
 ## Deploy
 ### Prepare your environnement
-We are going to use a single network called `traefik` where all containers that are handling HTTP traffic (using Traefik) will reside in.
+We are going to use a single network called `traefik` where all containers that are handling HTTP traffic (using Traefik) will reside in. This will let you run containers on the same virtual network and let traefik now which of your containers have to be publicly available.
 ```sh
 docker network create traefik
 ```
