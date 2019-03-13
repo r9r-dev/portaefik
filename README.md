@@ -230,4 +230,4 @@ cd /data/portaefik
 docker-compose up -d
 ```
 
-Finally, go to portainer, in volumes and remove any unused volumes. They are old /tmp volumes created by traefik.
+Finally, go to portainer, in volumes and remove any unused volumes. They are `/tmp` folder from old traefik containers.
