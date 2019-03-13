@@ -147,6 +147,6 @@ The container is not exposing is port to host anymore. Instead, you use labels t
 
 ping.yourdomain.tld => your_server:443 => traefik => container:80
 
-Don't forget to configure your subdomain to your server ip on your nameserver hosting service. When you are ready, click on *Deploy the stack*. This is where the magic starts. Go to https://ping.yourdomain.tld : it should work using https with a valid certificate.
+Don't forget to route your subdomain to your server ip on your nameserver hosting service. When you are ready, click on *Deploy the stack*. This is where the magic starts. Go to https://ping.yourdomain.tld : it should work using https with a valid certificate.
 
 With portainer, you can then go back to your stacks and edit the `docker-compose.yml` file. Portainer let you also manage your stack, stopping, killing, restarting any containers with a single click.
