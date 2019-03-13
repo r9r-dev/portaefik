@@ -157,9 +157,9 @@ Now that your server is running and you are starting to deploy services, you sho
 ## All your data are belong to us
 First, create a simple stupid folder:
 ```sh
-/data
+mkdir -p /data
 ```
-Data is where is data. Ok cool. Time to move traefik and portainer's data.
+Data is where is data. Ok cool. Time to move traefik and portainer's data into... data.
 
 For Traefik:
 ```sh
@@ -220,9 +220,14 @@ networks:
 You can now safely backup /data and nothing else. For every new service you are deploying, create a new folder in /data to map your volumes and you are good to go :)
 
 # Last steps
-Move your `docker-compose.yml` in `/data` and backup it with other files. You can then remove your local git repository.
+Move your `docker-compose.yml` in `/data` and backup it with other files. You can then remove your local git repository. Because your `docker-compose.yml` file will change folder, you can just delete containers in the old folder and recreate them in the new using `docker-compose down` and `docker-compose up`.
 
 ```sh
 mkdir -p /data/portaefik
+docker-compose down
 mv docker-compose.yml /data/portaefik
+cd /data/portaefik
+docker-compose up -d
 ```
+
+Finally, go to portainer, in volumes and remove any unused volumes. They are old /tmp volumes created by traefik.
