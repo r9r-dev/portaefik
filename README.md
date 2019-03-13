@@ -218,3 +218,11 @@ networks:
 ```
 
 You can now safely backup /data and nothing else. For every new service you are deploying, create a new folder in /data to map your volumes and you are good to go :)
+
+# Last steps
+Move your `docker-compose.yml` in `/data` and backup it with other files. You can then remove your local git repository.
+
+```sh
+mkdir -p /data/portaefik
+mv docker-compose.yml /data/portaefik
+```
