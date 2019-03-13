@@ -8,28 +8,28 @@ services:
     ports:
       - "443:443"
     volumes:
-      -  "$PWD/traefik.toml:/etc/traefik/traefik.toml"
-      -  "$PWD/acme.json:/etc/traefik/acme.json"
+      - $PWD/traefik.toml:/etc/traefik/traefik.toml
+      - $PWD/acme.json:/etc/traefik/acme.json
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
     labels:
-      - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:traefik.altf4.dev"
-      - "traefik.frontend.auth.basic=User:Hash"
-      - "traefik.port=8080"
-      - "traefik.backend=traefik"
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:traefik.altf4.dev
+      - traefik.frontend.auth.basic.users=User:Hash
+      - traefik.port=8080
+      - traefik.backend=traefik
 
   portainer:
     image: portainer/portainer
     networks:
       - traefik
     labels:
-      - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:portainer.altf4.dev"
-      - "traefik.port=9000"
-      - "traefik.backend=portainer"
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:portainer.altf4.dev
+      - traefik.port=9000
+      - traefik.backend=portainer
     volumes:
-        - "/var/run/docker.sock:/var/run/docker.sock"
+      - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
 
 networks:
