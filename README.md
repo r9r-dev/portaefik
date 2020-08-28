@@ -1,7 +1,7 @@
 # Portaefik
 portainer + traefik + docker in a nutshell
 
-My blog (french) : https://blog.altf4.dev/
+My blog (french) : https://blog.r9r.dev/
 
 # Description
 This repository contains everything needed to prepare a scalable linux server ready to manage many web applications in a secured environnement.
