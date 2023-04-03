@@ -2,7 +2,7 @@
 
 portainer + traefik + docker in a nutshell
 
-My blog (french) : https://blog.r9r.dev/
+My blog (french) : (down for now)
 
 # Description
 
