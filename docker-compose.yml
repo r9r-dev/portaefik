@@ -1,33 +1,63 @@
-version: '2'
+version: "3"
 
 services:
   proxy:
-    image: traefik
+    image: traefik:v3.0
+    container_name: "traefik"
     networks:
       - traefik
     ports:
-      - "443:443"
+      - "80:80" # HTTP
+      - "443:443" # HTTPS
     volumes:
-      - $PWD/traefik.toml:/etc/traefik/traefik.toml
-      - $PWD/acme.json:/etc/traefik/acme.json
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ./letsencrypt:/letsencrypt
+      - ./users.u:/users/users.u
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: unless-stopped
+    command:
+      #- "--log.level=DEBUG"
+      # Docker configuration
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=traefik"
+      # Configure entrypoint
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      # SSL configuration
+      - "--certificatesresolvers.letsencryptresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.letsencryptresolver.acme.httpchallenge.entrypoint=web"
+      #- "--certificatesresolvers.letsencryptresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.letsencryptresolver.acme.email=youremail@domain.tld"
+      - "--certificatesresolvers.letsencryptresolver.acme.storage=/letsencrypt/acme.json"
+      # Global HTTP -> HTTPS
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      # Enable dashboard
+      - "--api.dashboard=true"
     labels:
-      - traefik.frontend.rule=Host:traefik.altf4.dev
-      - traefik.frontend.auth.basic.users=User:Hash
-      - traefik.port=8080
-      - traefik.backend=traefik
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.dashboard.tls.certresolver=letsencryptresolver"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.middlewares=dashboard-auth"
+      - "traefik.http.middlewares.dashboard-auth.basicauth.usersfile=/users/users.u"
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.domain.tld`)"
+      - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
 
   portainer:
-    image: portainer/portainer
+    image: portainer/portainer-ce
+    container_name: "portainer"
     networks:
       - traefik
     labels:
-      - traefik.frontend.rule=Host:portainer.altf4.dev
-      - traefik.port=9000
-      - traefik.backend=portainer
+      - "traefik.enable=true"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+      - "traefik.http.routers.portainer.rule=Host(`portainer.domain.tld`)"
+      - "traefik.http.routers.portainer.entrypoints=websecure"
+      - "traefik.http.routers.portainer.tls.certresolver=letsencryptresolver"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /data/portaefik/portainer-data:/data
     restart: unless-stopped
 
 networks:
